@@ -142,6 +142,13 @@
       animation: shake .35s ease;
     }
 
+    .feedback.hidden {
+      display: none;
+      margin: 0;
+      min-height: 0;
+      padding: 0;
+    }
+
     .feedback {
       margin: 14px 0;
       min-height: 58px;
@@ -319,7 +326,7 @@
     <div class="section-title">1. Misolni tanlang</div>
     <section id="equations" class="grid"></section>
 
-    <div id="feedback" class="feedback info">6+5 ni tanlang, keyin 11 ni bosing 🚀</div>
+    <div id="feedback" class="feedback info hidden"></div>
 
     <div class="section-title">2. To‘g‘ri javobni tanlang</div>
     <section id="answers" class="grid"></section>
@@ -450,6 +457,12 @@
     }
 
     function showFeedback(type, text) {
+      if (type === 'info') {
+        feedbackEl.className = 'feedback info hidden';
+        feedbackEl.textContent = '';
+        return;
+      }
+
       feedbackEl.className = `feedback ${type}`;
       feedbackEl.textContent = text;
     }
