@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harflar rasmlari</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(255, 229, 90, .5), transparent 28%),
+        radial-gradient(circle at 90% 18%, rgba(120, 220, 255, .55), transparent 30%),
+        linear-gradient(180deg, #fff8d8, #e8f7ff 55%, #f3e8ff);
+      color: #1f2937;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app {
+      width: min(100vw, 520px);
+      min-height: 100vh;
+      padding: 18px 14px 26px;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .round-button {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 0;
+      background: linear-gradient(#8b5cf6, #5b21b6);
+      color: white;
+      font-size: 22px;
+      box-shadow: 0 6px 0 #3b1682, 0 12px 18px rgba(0,0,0,.18);
+      cursor: pointer;
+    }
+
+    .hero {
+      padding: 22px 16px;
+      border-radius: 32px;
+      background: linear-gradient(135deg, #ff9f1c, #ff4d6d 48%, #7c3aed);
+      color: white;
+      text-align: center;
+      border: 5px solid rgba(255,255,255,.75);
+      box-shadow: 0 12px 26px rgba(124,58,237,.25);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.05;
+      font-weight: 1000;
+      text-shadow: 0 3px 0 rgba(0,0,0,.18);
+    }
+
+    .hero p {
+      margin: 9px 0 0;
+      font-size: 17px;
+      font-weight: 850;
+      opacity: .98;
+      line-height: 1.35;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .image-card {
+      border: 0;
+      padding: 0;
+      overflow: hidden;
+      border-radius: 28px;
+      background: white;
+      text-align: left;
+      cursor: pointer;
+      box-shadow: 0 8px 0 rgba(0,0,0,.12), 0 16px 26px rgba(0,0,0,.10);
+      transition: transform .15s ease;
+    }
+
+    .image-card:active { transform: scale(.97); }
+
+    .image-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1.15;
+      overflow: hidden;
+      background: #f8fafc;
+    }
+
+    .image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .letter-badge {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      background: linear-gradient(#a78bfa, #6d28d9);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 31px;
+      font-weight: 1000;
+      box-shadow: 0 5px 0 #4c1d95;
+      text-transform: uppercase;
+    }
+
+    .card-body {
+      padding: 11px 12px 14px;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 1000;
+      color: #111827;
+      line-height: 1.15;
+    }
+
+    .card-subtitle {
+      margin: 4px 0 0;
+      font-size: 13px;
+      font-weight: 750;
+      color: #6b7280;
+      line-height: 1.25;
+    }
+
+    .fullscreen {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(15, 23, 42, .96);
+      display: none;
+      flex-direction: column;
+      padding: 12px;
+    }
+
+    .fullscreen.open { display: flex; }
+
+    .fullscreen-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 4px 0 12px;
+      color: white;
+    }
+
+    .fullscreen-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .big-letter {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(#fde68a, #f59e0b);
+      color: #7c2d12;
+      font-size: 34px;
+      font-weight: 1000;
+      box-shadow: 0 5px 0 #b45309;
+      flex-shrink: 0;
+    }
+
+    .fullscreen-text h2 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.15;
+      font-weight: 1000;
+    }
+
+    .fullscreen-text p {
+      margin: 3px 0 0;
+      font-size: 13px;
+      font-weight: 750;
+      opacity: .82;
+      line-height: 1.2;
+    }
+
+    .close-button {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 0;
+      background: #ef4444;
+      color: white;
+      font-size: 24px;
+      font-weight: 1000;
+      cursor: pointer;
+      box-shadow: 0 5px 0 #991b1b;
+      flex-shrink: 0;
+    }
+
+    .fullscreen-image-area {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 16px 38px rgba(0,0,0,.35);
+    }
+
+    .fullscreen-image-area img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      background: white;
+    }
+
+    .prompt-bar {
+      margin-top: 12px;
+      border-radius: 24px;
+      padding: 14px 16px;
+      text-align: center;
+      color: #4a2600;
+      background: linear-gradient(#fff176, #ffb300);
+      font-size: 18px;
+      font-weight: 1000;
+      box-shadow: 0 6px 0 #9e6500;
+    }
+
+    @media (max-width: 340px) {
+      .grid { gap: 10px; }
+      .card-title { font-size: 16px; }
+      .card-subtitle { font-size: 12px; }
+      .hero h1 { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="top-bar">
+      <button class="round-button" onclick="window.location.href='../'" aria-label="Bosh sahifa">🏠</button>
+      <button class="round-button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Yuqoriga">⬆️</button>
+    </div>
+
+    <section class="hero">
+      <h1>Sehrli o‘rmon</h1>
+      <p>Harflarni topish. Tanlangan harf qatnashgan rasmlarni ayting.</p>
+    </section>
+
+    <section class="grid" id="lettersGrid"></section>
+  </main>
+
+  <section class="fullscreen" id="fullscreen">
+    <div class="fullscreen-header">
+      <div class="fullscreen-title">
+        <div class="big-letter" id="fullLetter">K</div>
+        <div class="fullscreen-text">
+          <h2 id="fullTitle">K harfi</h2>
+          <p>Tanlangan harf qatnashgan rasmlarni ayting</p>
+        </div>
+      </div>
+      <button class="close-button" onclick="closeImage()" aria-label="Yopish">×</button>
+    </div>
+
+    <div class="fullscreen-image-area">
+      <img id="fullImage" src="" alt="" />
+    </div>
+
+    <div class="prompt-bar" id="promptBar">Tanlangan harf qatnashgan rasmlarni ayting 😊</div>
+  </section>
+
+  <script>
+    const letters = [
+      {
+        letter: 'D',
+        title: 'D harfi',
+        image: 'image/d-harfi',
+        prompt: 'D harfi qatnashgan rasmlarni ayting.'
+      },
+      {
+        letter: 'K',
+        title: 'K harfi',
+        image: 'image/k-harfi.jpg',
+        prompt: 'K harfi qatnashgan rasmlarni ayting.'
+      },
+      {
+        letter: 'L',
+        title: 'L harfi',
+        image: 'image/l-harfi.jpg',
+        prompt: 'L harfi qatnashgan rasmlarni ayting.'
+      },
+      {
+        letter: 'M',
+        title: 'M harfi',
+        image: 'image/m-harfi.jpg',
+        prompt: 'M harfi qatnashgan rasmlarni ayting.'
+      },
+      {
+        letter: 'Q',
+        title: 'Q harfi',
+        image: 'image/q-harfi.jpg',
+        prompt: 'Q harfi qatnashgan rasmlarni ayting.'
+      },
+      {
+        letter: 'V',
+        title: 'V harfi',
+        image: 'image/v-harfi.jpg',
+        prompt: 'V harfi qatnashgan rasmlarni ayting.'
+      }
+    ];
+
+    const grid = document.getElementById('lettersGrid');
+    const fullscreen = document.getElementById('fullscreen');
+    const fullLetter = document.getElementById('fullLetter');
+    const fullTitle = document.getElementById('fullTitle');
+    const fullImage = document.getElementById('fullImage');
+    const promptBar = document.getElementById('promptBar');
+
+    function renderGrid() {
+      grid.innerHTML = letters.map((item, index) => `
+        <button class="image-card" onclick="openImage(${index})">
+          <div class="image-wrap">
+            <img src="${item.image}" alt="${item.title}" />
+            <div class="letter-badge">${item.letter}</div>
+          </div>
+          <div class="card-body">
+            <h2 class="card-title">${item.title}</h2>
+            <p class="card-subtitle">Rasmni katta ochish uchun bosing</p>
+          </div>
+        </button>
+      `).join('');
+    }
+
+    function openImage(index) {
+      const item = letters[index];
+      fullLetter.textContent = item.letter;
+      fullTitle.textContent = item.title;
+      fullImage.src = item.image;
+      fullImage.alt = item.title;
+      promptBar.textContent = item.prompt;
+      fullscreen.classList.add('open');
+      
+    }
+
+    function closeImage() {
+      fullscreen.classList.remove('open');
+      fullImage.src = '';
+      
+    }
+
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeImage();
+    });
+
+    renderGrid();
+  </script>
+</body>
+</html>
